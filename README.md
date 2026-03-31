@@ -82,6 +82,20 @@ Docking missions use a multi-waypoint arc approach followed by USBL acoustic hom
 
 The trajectory shows the vehicle traversing arc waypoints around terrain, then homing to the dock station via USBL acoustic measurements (range, azimuth, elevation). Bailout reached at 1.24m from dock.
 
+### VTK 3D Rendered Views — Docking Approach
+
+![Docking VTK perspective](figures/docking_vtk_perspective.png)
+
+Perspective view of the full docking approach: arc waypoints at constant depth (20m), followed by USBL homing descent to dock depth (30m). Cyan trail = executed path. Dock station visible as target marker.
+
+![Docking VTK close](figures/docking_vtk_close.png)
+
+Close-up view of the final USBL homing approach. The vehicle converges on the dock station from the last arc waypoint, descending from 20m to 30m during the homing phase.
+
+![Docking VTK top](figures/docking_vtk_top.png)
+
+Top-down (N-E) view showing the arc waypoint geometry. The vehicle follows a curved path around terrain to approach the dock from a safe direction, avoiding bathymetry obstacles.
+
 ### Docking Swim Lane — Mission Phase Timeline
 
 ![Docking baseline swim lane](figures/docking_baseline_swim_lane.png)
@@ -137,6 +151,9 @@ figures/
   rudder_stuck_swim_lane.png            ← behavior state timeline
   docking_baseline_trajectory.png       ← arc waypoints + USBL homing
   docking_baseline_swim_lane.png        ← docking mission phase timeline
+  docking_vtk_perspective.png           ← VTK 3D perspective of docking approach
+  docking_vtk_close.png                 ← VTK close-up of USBL homing phase
+  docking_vtk_top.png                   ← VTK top-down (N-E) arc geometry
 ```
 
 ---
