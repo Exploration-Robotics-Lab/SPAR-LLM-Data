@@ -29,7 +29,9 @@ within the AUV power and compute envelope (60W, 275 TOPS, 64GB).
 
 ## Dataset scope
 
-Hundreds of runs generated across varying:
+Latest: 4x rudder_stuck NIM API trials added March 28, 2026 -- nemotron-3-super-120b-a12b via integrate.api.nvidia.com
+
+700+ labeled trials generated across varying:
 - Fault types: rudder stuck, depth sensor bias, thruster dead, elevator stuck,
   battery cell failure, USBL dropout, and 6 docking-specific faults:
   USBL bearing bias, compass offset, intermittent rudder dropout,
@@ -43,22 +45,27 @@ Hundreds of runs generated across varying:
 ## Repository structure
 
 experiments/
+  rudder_stuck_nim_nemotron120b/
+    trial_001/                          -- 20260328_003116 api_nvidia
+    trial_002/                          -- 20260328_004938 api_nvidia
+    trial_003/                          -- 20260328_012515 api_nvidia
+    trial_004/                          -- 20260328_014221 api_nvidia
+      experiment_config.json            -- fault params, LLM provider, model, prompt tier
+      session_summary.json              -- outcome PASS/FAIL, tokens, llm_provider: nvidia_nim
+      telemetry_et.csv                  -- 38-column 1Hz telemetry
+      fault_trajectory.csv              -- fault phase markers
+      evaluation.txt                    -- evaluator decision and reasoning
+      llm_prompt.txt / llm_response.txt -- full NIM prompt and raw response
+      trajectory_plot.png               -- 3D/top/side trajectory
+      swim_lane_timeline.png            -- behavior state timeline
+      battery_plots_and_data/           -- SOC, voltage, current, power
+      VTK views/                        -- 3D rendered views
   rudder_stuck_baseline/
     trial_001/
-      experiment_config.json    -- fault params, LLM provider, model, prompt tier
-      session_summary.json      -- outcome PASS/FAIL, tokens, llm_provider: nvidia_nim
-      telemetry_et.csv          -- 38-column 1Hz (position, depth, actuators, battery, USBL)
-      fault_trajectory.csv      -- fault phase markers aligned to telemetry
-      evaluation.txt            -- evaluator decision and reasoning
-      ai_analysis.txt           -- NVIDIA NIM Llama 90B Vision strategy critique
-      trajectory_plot.png       -- 3D/top/side trajectory with fault/recovery colors
-      swim_lane_timeline.png    -- behavior state timeline
-      battery_plots_and_data/   -- SOC, voltage, current, power subplots
   docking_depth_sensor_bias/
     trial_001/
-      (same structure)
-docs/
-  DATA_FORMAT.md                -- column definitions for telemetry_et.csv
+missions/
+  docking_wp_arc_ramp_5_20260323_101836.mission  -- docking approach mission
 
 ## Citation
 
