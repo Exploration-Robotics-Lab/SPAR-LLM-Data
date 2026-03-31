@@ -1,0 +1,29 @@
+============================================================
+LLM DECISION ANALYSIS
+============================================================
+
+FULL MODE (complete guidance)
+
+--- INPUT FACTORS ---
+  Fault component:    rudder
+  Detection depth:    111.0m
+  Verification:       PERSISTENT (10/10 stuck)
+
+--- EXPECTED ---
+  Expected strategy:  ACTIVE ASCENT (rudder fault -- depth control unaffected)
+
+--- LLM CHOICES ---
+  Actual strategy:    DROP WEIGHT / BUOYANCY (speed=0)
+  Drop weights:       YES
+  Mission timer:      8363s
+  Max depth envelope: 180m
+
+--- ANALYSIS ---
+  MISMATCH: Strategy differs from expected!
+    Expected: ACTIVE ASCENT (rudder fault -- depth control unaffected)
+    Got:      DROP WEIGHT / BUOYANCY (speed=0)
+
+--- POTENTIAL ISSUES ---
+  WARNING: Dropping weights for rudder fault -- depth control works, weights not needed
+
+============================================================

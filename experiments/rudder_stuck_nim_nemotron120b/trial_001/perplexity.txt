@@ -1,0 +1,2 @@
+⚠ OpenAI returned no logprobs.
+Reasoning models (o1/o3/o4-mini) don't support logprobs.

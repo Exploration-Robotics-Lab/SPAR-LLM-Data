@@ -1,0 +1,48 @@
+═══════════════════════════════════════════
+  BATTERY POWER ANALYSIS — Phase Summary  
+═══════════════════════════════════════════
+
+── PHASE 1: Mission + Fault (239.6s) ──
+  SOC:     85.0000% → 84.3989%  (drain: 0.6011%)
+  Drain rate:  9.03 %/hour
+  Voltage: 46.86V → 46.43V
+  Current: avg 4.50A
+  Power breakdown:
+    Motor (P_motor):     178.9 W avg
+    Hotel (P_hotel):      30.0 W avg
+    Total (P_total):     208.9 W avg
+    → Motor active: thruster at ~4.5A (179W electrical = I²R + back-EMF)
+    → Hotel: 30W constant (sensors, comms, CPU, nav computer)
+
+── PHASE 2: Recovery (4415.0s) ──
+  SOC:     84.3989% → 82.8251%  (drain: 1.5738%)
+  Drain rate:  1.28 %/hour
+  Voltage: 46.81V → 46.70V
+  Current: avg 0.64A
+  Power breakdown:
+    Motor (P_motor):       0.0 W avg
+    Hotel (P_hotel):      30.0 W avg
+    Total (P_total):      30.0 W avg
+    → Motor idle/off: no thrust (buoyancy or drift)
+    → Hotel: 30W constant (sensors, comms, CPU, nav computer)
+
+── COMPARISON ──
+  Fault drain rate:    9.03 %/hr
+  Recovery drain rate: 1.28 %/hr
+  Ratio: 7.0× faster drain during fault phase
+
+  WHY: Recovery uses buoyancy (drop weight) — no motor power.
+  Only hotel load (30W) draws from battery.
+  Fault phase had motor at 179W + hotel 30W.
+
+── LLM POWER NOTE ──
+  LLM query runs on shore-side or onboard GPU.
+  During query: ~50W compute overhead (est.)
+  After mission generated: LLM powered down,
+  vehicle runs open-loop mission (no AI compute).
+  Recovery power = motor + hotel only.
+
+── BATTERY CARRY-OVER ──
+  Fault final SOC:     84.3989%
+  Recovery start SOC:  84.3989%
+  ✓ Carry-over OK (gap: 0.000007%)

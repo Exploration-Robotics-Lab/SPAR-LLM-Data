@@ -1,0 +1,36 @@
+{
+  "faults_loaded": [
+    {
+      "component": "rudder",
+      "mode": "stuck",
+      "param": 0.35,
+      "trigger": "time",
+      "trigger_val": 210.0
+    }
+  ],
+  "faults_activated": [
+    {
+      "component": "rudder",
+      "mode": "stuck",
+      "sim_time": 210.0,
+      "depth": 101.7
+    }
+  ],
+  "fault_detected": {
+    "component": "rudder",
+    "sim_time": 237.8,
+    "depth": 111.03,
+    "detection_method": "actuator_mismatch",
+    "mismatch": 0.8736
+  },
+  "final_state": {
+    "sim_time": 239.6,
+    "position_n": 682.29,
+    "position_e": 674.8,
+    "depth": 111.5,
+    "heading": -7.363532,
+    "speed": 0.6704,
+    "pitch": -0.417006
+  },
+  "detection_latency": 27.80000000000001
+}

@@ -1,0 +1,213 @@
+You are an autonomous underwater vehicle (AUV) recovery mission planner for the MIT Sea Grant Odyssey II simulator (auv_sim_fd).
+
+A fault has been detected and the vehicle needs to be brought safely to the surface.
+
+=== FAULT REPORT ===
+Scenario: rudder_stuck
+Severity: HIGH
+Description: Rudder locked at 0.35 rad — vehicle spirals in a helicoidal path, heading uncontrollable. LLM must plan ascent despite continuous turning. Active thrust + negative elevator for helicoidal ascent, or drop weights.
+
+Faults activated:
+  - rudder (stuck) at t=210.0s, depth=101.7m
+
+Fault DETECTED by onboard error_trap:
+  Component:  rudder
+  Method:     actuator_mismatch
+  Mismatch:   0.8736
+  Detected at: t=237.8s, depth=111.0m
+  Detection latency: 27.8s
+
+Post-detection verification: PERSISTENT
+  Stuck count: 10/10 cycles
+  --> Fault is PERSISTENT (actuator remains stuck)
+
+=== ACTUATOR STATUS ===
+  [OK] ELEVATOR: OK
+  [ X] RUDDER: FAULT (stuck), stuck at 0.350 rad (20.1°)
+  [OK] THRUSTER: OK
+  [OK] DEPTH_SENSOR: OK
+  [OK] WEIGHT_DROP: AVAILABLE
+
+=== POWER STATUS ===
+Battery voltage:  46.4 V
+State of charge:  84%
+Battery current:  4.5 A
+Total power:      210 W
+Motor efficiency: 8%
+
+=== VEHICLE STATE ===
+Position:  North = 682.3 m,  East = 674.8 m
+Depth:     111.5 m
+Heading:   -7.364 rad  (-421.9 deg)
+Speed:     0.67 m/s
+Pitch:     -0.4170 rad  (-23.9 deg)
+Sim time:  239.6 s
+
+=== COMPONENT ANALYSIS ===
+FAULTED COMPONENT: RUDDER
+The RUDDER controls HEADING ONLY. It does NOT control depth or pitch.
+The ELEVATOR still works — the vehicle CAN ascend via helicoidal (spiral) path.
+
+PHYSICS (rudder fault):
+  - A stuck rudder causes the vehicle to fly in a HELICOIDAL (spiral) path.
+  - With thrust + positive ascent_angle, the vehicle spirals UPWARD.
+    Vertical progress is real but slower than straight ascent.
+  - Dropping weights adds buoyancy for additional vertical lift.
+  - Rudder stuck angle: 0.350 rad (20.1°)
+
+TWO VIABLE STRATEGIES (choose ONE or combine):
+  A) ACTIVE SPIRAL ASCENT: thrust + ascent_angle (0.3-0.6 rad)
+     - Vehicle spirals upward under its own power
+     - Works well for small-to-moderate stuck angles
+     - Set speed(m/s) 1.0-1.5, ascent_angle 0.3-0.5 rad
+  B) DROP WEIGHTS (buoyancy): drop_ascent_weight(bool) = 1
+     - Passive buoyancy lifts the vehicle regardless of rudder state
+     - Most reliable for large stuck angles
+     - Can combine with low thrust for stability
+  - ascent_angle(rad): 0.4-0.5 (positive, helps vertical component)
+  - speed(m/s): 1.0-1.5 (helps stability)
+  - end_depth(m): 0 (actual surface)
+  - cutoff_depth(m): 162 (MUST be > 112m + 50m — vehicle dips 30-40m during spiral!)
+
+TIMER GUIDANCE:
+  - Spiral ascent vertical rate: ~0.03 m/s (helix wastes most thrust laterally)
+  - Buoyancy ascent rate: ~0.02 m/s (passive, reliable, no stuck-surface effect)
+  - Formula: timer ≥ current_depth / rate × 1.5 safety factor
+  - For deep faults (>100m): DROP WEIGHTS is more reliable than spiral ascent
+
+=== HINTS ===
+- Think about what happens when you apply thrust with a stuck control surface.
+- Think about what happens with ZERO thrust -- does the stuck surface still produce force?
+- Buoyancy (from dropping weights) works independently of all control surfaces.
+- Ascent angle: should it be positive or negative to go UP?
+- What value of end_depth means "at the surface"?
+- Plan generous timers -- recovery takes longer than you think.
+
+=== PHYSICS ===
+- A stuck control surface causes the vehicle to fly in a curved/spiral path.
+- With thrust + positive ascent_angle, the vehicle spirals UPWARD (helicoidal ascent).
+- Dropping weights adds positive buoyancy — vehicle rises passively regardless of actuator state.
+- With ZERO thrust, a stuck fin produces no hydrodynamic force (no flow over it).
+- Spiral paths take longer than straight paths — plan generous timers.
+- Persistent means the fault CONTINUES throughout recovery. Intermittent means it RECOVERED.
+
+=== PARAMETER GUIDANCE ===
+- ascent_angle(rad): MUST be POSITIVE (0.3-0.6 rad). NEGATIVE angles push vehicle DEEPER!
+- end_depth(m): should be 0 (actual surface, not 0.5 or 0.8)
+- speed(m/s): 1.0-1.5 for active ascent, 0 for buoyancy-only
+
+ASCENT RATE REFERENCE (use to compute mission_timer):
+  - Active STRAIGHT ascent (no stuck surface): ~0.15 m/s vertical
+  - Active SPIRAL ascent (stuck rudder/elevator): ~0.03 m/s vertical
+    (a stuck surface forces a helix — most thrust goes lateral, very little vertical)
+  - Buoyancy ascent (drop weights, zero thrust): ~0.02 m/s vertical
+    (passive rise, no thrust, stuck surfaces have NO effect — no water flow over them)
+  - Formula: mission_timer ≥ depth / vertical_rate × 1.5 (safety factor)
+  - Deeper = longer timer. A timer shorter than depth / rate WILL timeout.
+
+STRATEGY GUIDANCE FOR DEEP FAULTS (>100m):
+  - From deep water, active spiral ascent is VERY SLOW (~0.03 m/s with stuck surface)
+  - Drop weights is MORE RELIABLE for deep faults — passive buoyancy works regardless
+    of which actuator is stuck, and a stuck surface has ZERO effect with no thrust
+  - For depths >150m: strongly prefer DROP WEIGHTS with timer ≥ depth / 0.02 × 1.5
+
+=== CRITICAL SAFETY RULES ===
+  - depth_envelope max_depth MUST be GREATER than current depth (111.5m)
+    RECOMMENDED: max_depth = current_depth + 60m safety margin
+  - cutoff_depth MUST be GREATER than current depth (111.5m)
+    RECOMMENDED: cutoff_depth = current_depth + 50m safety margin
+    WARNING: The vehicle WILL dip 30-40m deeper during initial spiral maneuver!
+    If cutoff_depth is too tight, depth_envelope triggers abort IMMEDIATELY!
+    Use at LEAST current_depth + 50m for cutoff_depth!
+  - mission_timer must be long enough for recovery to complete
+
+CRITICAL PARAMETER VALUES:
+  - ascent_angle MUST be POSITIVE (0.3-0.6 rad). NEGATIVE angles push vehicle DEEPER!
+  - end_depth(m) should be 0 (not 0.5 or 0.8) — vehicle must reach actual surface.
+
+TIMER RULES (compute from current depth):
+  - Active spiral ascent rate (stuck surface): ~0.03 m/s vertical
+  - Buoyancy-only ascent rate (drop weights): ~0.02 m/s vertical
+  - Formula: mission_timer ≥ current_depth / ascent_rate × 1.5 (safety factor)
+  - Setting timer shorter than depth / rate GUARANTEES timeout failure.
+  - For deep faults (>100m): DROP WEIGHTS is more reliable than spiral ascent.
+    A stuck surface has ZERO hydrodynamic effect with no thrust (no water flow).
+
+RECOVERY OBJECTIVES:
+  1. SURFACE: Bring the vehicle to depth < 1.5 m
+  2. SAFE:    Never exceed safe depth (set depth_envelope accordingly)
+  3. BOUNDED: Stay within the [0, 2000] m domain in both N and E
+  4. FAST:    Minimize time to surface (but SAFETY > SPEED)
+
+=== BEHAVIORS ===
+AVAILABLE BEHAVIORS (use ONLY these):
+
+1. ascend -- PID-controlled ascent to target depth
+   b_arg: heading(rad)              -- heading to maintain
+   b_arg: rudder_angle(rad)         -- rudder offset (0 = straight)
+   b_arg: ascent_angle(rad)         -- pitch angle for ascent
+   b_arg: speed(m/s)                -- forward speed (or 0 for buoyancy-only)
+   b_arg: end_depth(m)              -- target depth (e.g. 1.0 = near surface)
+   b_arg: drop_descent_weight(bool) -- 0 or 1 (drop ballast)
+   b_arg: drop_ascent_weight(bool)  -- 0 or 1 (drop ballast)
+   b_arg: abort_mission_active(bool) -- 0
+
+2. setpoint -- hold heading, depth, and speed for a duration
+   b_arg: heading(rad), depth(m), speed(m/s), time(s), cycles(int), turn(rad), desired_pitch(rad)
+
+3. descend -- PID-controlled descent to target depth
+   b_arg: heading(rad), end_depth(m), descent_angle(rad), speed(m/s), max_time(s),
+          min_altitude(m), drop_descent_weight(bool)
+
+4. waypoint_2d -- navigate to a specific N,E position at a depth
+   b_arg: wpt_n(m), wpt_e(m), depth(m), speed(m/s), capture(m), timeout(s)
+
+REQUIRED SAFETY BEHAVIORS (include in EVERY state):
+
+5. mission_timer
+   b_arg: time(s) -- maximum time for this state
+
+6. depth_envelope
+   b_arg: max_depth(m)              -- MUST be > current depth
+   b_arg: min_depth(m)              -- 0
+   b_arg: alt_env_active(bool)      -- 0
+   b_arg: min_altitude(m)           -- 5
+   b_arg: depth_cutoff_active(bool) -- 1
+   b_arg: cutoff_depth(m)           -- MUST be > current depth
+
+=== MISSION FORMAT ===
+MISSION FILE FORMAT (follow exactly):
+
+UseSim 1
+DebugMode 0
+
+state: <state_name>
+  sensor: uo_control_pitch_lim(deg) 45
+  behavior: mission_timer
+    b_arg: time(s) <seconds>
+  behavior: depth_envelope
+    b_arg: max_depth(m) <MUST be > 111.5>
+    b_arg: min_depth(m) 0
+    b_arg: alt_env_active(bool) 0
+    b_arg: min_altitude(m) 5
+    b_arg: depth_cutoff_active(bool) 1
+    b_arg: cutoff_depth(m) <MUST be > 111.5>
+  behavior: <chosen_behavior>
+    b_arg: <arg1> <value1>
+    b_arg: <arg2> <value2>
+    ...
+
+RULES:
+- Start with "UseSim 1" and "DebugMode 0" (no leading spaces)
+- Each state starts with "state: <name>" (no leading spaces)
+- sensor/behavior lines indented 2 spaces
+- b_arg lines indented 4 spaces
+- Do NOT include sensor: m_pos_n/m_pos_e/m_depth
+- DO include sensor: uo_control_pitch_lim(deg) 45 in the first state
+- You may use 1-3 states
+- All values are numbers (no units in values, units are in the arg name)
+- CRITICAL: depth_envelope max_depth MUST be GREATER than 111.5m!
+- CRITICAL: cutoff_depth MUST be GREATER than 111.5m!
+
+Output ONLY the raw .mission file text -- no markdown, no explanation, no code blocks.
+Start with "UseSim 1" on the first line.

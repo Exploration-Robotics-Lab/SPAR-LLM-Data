@@ -1,0 +1,7 @@
+══ Battery Continuity Forensics ══
+
+Fault ET final SOC      : 0.84398908
+Fault report final SOC  : 0.84398908
+Recovery ET first SOC   : 0.84398901
+Recovery-first minus fault-final SOC: -0.000000070
+LLM durations (s)       : [55.27096652984619]

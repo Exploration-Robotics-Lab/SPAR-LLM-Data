@@ -1,0 +1,43 @@
+{
+  "export_time": "2026-03-28T01:42:26.869439",
+  "scenario_name": "rudder_stuck",
+  "pipeline": {
+    "sim_ran": true,
+    "fault_injected": true,
+    "llm_query": true,
+    "llm_model": "nvidia/nemotron-3-super-120b-a12b",
+    "llm_provider": "nvidia_nim",
+    "llm_temperature": 0.3,
+    "prompt_mode": "full",
+    "llm_time_s": 29.210394382476807,
+    "llm_attempts": 1,
+    "llm_calls": 1,
+    "feedback_used": false,
+    "validation_ok": true,
+    "validation_errors": [],
+    "recovery_sim": true
+  },
+  "trial_config": {
+    "randomized_param": null,
+    "intermittent": null,
+    "perplexity": null
+  },
+  "evaluation": {
+    "passed": true,
+    "surfaced": true,
+    "final_depth_m": -0.003,
+    "max_depth_m": 111.5,
+    "time_to_surface_s": 4356.0,
+    "bounded": true,
+    "notes": "Final depth: -0.0m\nMax depth: 111.5m\nSurfaced: YES\nBounded: YES\nTime to surface: 4356s\nLLM attempts: 1\nLLM time: 29.2s"
+  },
+  "detection": {
+    "detected": true,
+    "component": "rudder",
+    "method": "actuator_mismatch",
+    "mismatch": 0.8736,
+    "sim_time": 237.8,
+    "latency_s": 27.80000000000001
+  },
+  "telemetry_records": 241
+}

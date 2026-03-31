@@ -1,0 +1,7 @@
+Final depth: -0.0m
+Max depth: 111.5m
+Surfaced: YES
+Bounded: YES
+Time to surface: 4356s
+LLM attempts: 1
+LLM time: 55.3s

@@ -1,0 +1,18 @@
+{
+  "fault_end_t": 239.6,
+  "llm_call_durations": [
+    95.2684428691864
+  ],
+  "llm_call_positions": [
+    [
+      239.6,
+      334.8684428691864
+    ]
+  ],
+  "attempt_offsets": [
+    334.8684428691864
+  ],
+  "llm_model_power_w": 40.0,
+  "hotel_power_w": 30.0,
+  "continuity_text": "\u2550\u2550 Battery Continuity Forensics \u2550\u2550\n\nFault ET final SOC      : 0.84398908\nFault report final SOC  : 0.84398908\nRecovery ET first SOC   : 0.84398901\nRecovery-first minus fault-final SOC: -0.000000070\nLLM durations (s)       : [95.2684428691864]\n"
+}

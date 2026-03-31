@@ -1,0 +1,20 @@
+# FL Fault Scenario: rudder_stuck
+# Rudder locked at 0.35 rad — vehicle spirals in a helicoidal path, heading uncontrollable. LLM must plan ascent despite continuous turning. Active thrust + negative elevator for helicoidal ascent, or drop weights.
+# Severity: HIGH
+#
+# Battery model config
+battery: SOC_0 0.85
+battery: P_hotel 30.0
+battery: V_nom 48.0
+
+# Primary fault
+fault: rudder stuck 0.35 time 210.0
+
+# Detection thresholds
+detection: elev_threshold 0.05
+detection: rud_threshold 0.05
+detection: thr_threshold 0.5
+detection: depth_threshold 3.0
+detection: consecutive_cycles 50
+detection: depth_cycles 100
+detection: settling_time 10.0

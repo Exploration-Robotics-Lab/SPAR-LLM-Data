@@ -1,0 +1,23 @@
+UseSim 1
+DebugMode 0
+
+state: recover
+  sensor: uo_control_pitch_lim(deg) 45
+  behavior: mission_timer
+    b_arg: time(s) 8500
+  behavior: depth_envelope
+    b_arg: max_depth(m) 180
+    b_arg: min_depth(m) 0
+    b_arg: alt_env_active(bool) 0
+    b_arg: min_altitude(m) 5
+    b_arg: depth_cutoff_active(bool) 1
+    b_arg: cutoff_depth(m) 165
+  behavior: ascend
+    b_arg: heading(rad) 0
+    b_arg: rudder_angle(rad) 0
+    b_arg: ascent_angle(rad) 0
+    b_arg: speed(m/s) 0
+    b_arg: end_depth(m) 0
+    b_arg: drop_descent_weight(bool) 0
+    b_arg: drop_ascent_weight(bool) 1
+    b_arg: abort_mission_active(bool) 0

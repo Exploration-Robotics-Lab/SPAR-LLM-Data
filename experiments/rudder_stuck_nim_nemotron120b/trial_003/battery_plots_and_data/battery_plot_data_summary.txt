@@ -1,0 +1,20 @@
+── Battery Data (from plots) ──
+  SOC(%) (Mission+Fault): t=[0-240s], start=84.999993, end=84.398908, min=84.398908, max=84.999993, delta=-0.601085
+  SOC(%) (Mission+Fault): t=[240-335s], start=84.398908, end=76.680400, min=76.680400, max=84.398908, delta=-7.718508
+  SOC(%) (Recovery/Other): t=[335-335s], start=76.680400, end=76.680393, min=76.680393, max=76.680400, delta=-0.000007
+  SOC(%) (Recovery/Other): t=[335-4750s], start=76.680393, end=75.106617, min=75.106617, max=76.680393, delta=-1.573776
+  SOC(%) (Recovery/Other): t=[210-210s], start=0.000000, end=1.000000, min=0.000000, max=1.000000, delta=1.000000
+  SOC(%) (Recovery/Other): t=[238-238s], start=0.000000, end=1.000000, min=0.000000, max=1.000000, delta=1.000000
+  Voltage(V) (Mission+Fault): t=[0-240s], start=46.860000, end=46.430000, min=46.430000, max=46.860000, delta=-0.430000
+  Voltage(V) (Recovery/Other): t=[335-4750s], start=46.810000, end=46.700000, min=46.700000, max=46.810000, delta=-0.110000
+  Voltage(V) (Recovery/Other): t=[210-210s], start=0.000000, end=1.000000, min=0.000000, max=1.000000, delta=1.000000
+  Voltage(V) (Recovery/Other): t=[238-238s], start=0.000000, end=1.000000, min=0.000000, max=1.000000, delta=1.000000
+  Current(A) (Mission+Fault): t=[0-240s], start=0.639000, end=4.514000, min=0.639000, max=4.514000, delta=3.875000
+  Current(A) (Recovery/Other): t=[335-4750s], start=0.640000, end=0.642000, min=0.640000, max=0.642000, delta=0.002000
+  Current(A) (Recovery/Other): t=[210-210s], start=0.000000, end=1.000000, min=0.000000, max=1.000000, delta=1.000000
+  Current(A) (Recovery/Other): t=[238-238s], start=0.000000, end=1.000000, min=0.000000, max=1.000000, delta=1.000000
+  TotalPower(W) (Mission+Fault): t=[0-240s], start=30.000000, end=209.600000, min=30.000000, max=209.700000, delta=179.600000
+  TotalPower(W) (Mission+Fault): t=[240-335s], start=70.000000, end=70.000000, min=70.000000, max=70.000000, delta=0.000000
+  TotalPower(W) (Recovery/Other): t=[335-4750s], start=30.000000, end=30.000000, min=30.000000, max=30.000000, delta=0.000000
+  TotalPower(W) (Recovery/Other): t=[210-210s], start=0.000000, end=1.000000, min=0.000000, max=1.000000, delta=1.000000
+  TotalPower(W) (Recovery/Other): t=[238-238s], start=0.000000, end=1.000000, min=0.000000, max=1.000000, delta=1.000000
