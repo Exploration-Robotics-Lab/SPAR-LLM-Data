@@ -60,10 +60,6 @@ experiments/
       swim_lane_timeline.png            -- behavior state timeline
       battery_plots_and_data/           -- SOC, voltage, current, power
       VTK views/                        -- 3D rendered views
-  rudder_stuck_baseline/
-    trial_001/
-  docking_depth_sensor_bias/
-    trial_001/
 missions/
   docking_wp_arc_ramp_5_20260323_101836.mission  -- docking approach mission
 
